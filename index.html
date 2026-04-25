@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thira ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+body{
+ margin:0;
+ font-family:Poppins;
+ background:linear-gradient(135deg,#ff4e8a,#7a1c6b);
+ color:white;
+ overflow:hidden;
+}
+
+/* CENTER */
+.center{
+ height:100vh;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ text-align:center;
+}
+
+/* GLASS */
+.card{
+ background:rgba(255,255,255,0.1);
+ backdrop-filter:blur(10px);
+ padding:20px;
+ border-radius:20px;
+}
+
+/* BUTTON */
+button{
+ padding:12px 25px;
+ border:none;
+ border-radius:25px;
+ background:#ff2f6d;
+ color:white;
+ cursor:pointer;
+}
+
+/* HEARTS */
+.heart{
+ position:absolute;
+ width:12px;height:12px;
+ background:red;
+ transform:rotate(45deg);
+ animation:float 6s infinite;
+}
+@keyframes float{
+ 0%{bottom:-10%}
+ 100%{bottom:110%}
+}
+
+/* CHAT */
+.msg{
+ background:#ffffff22;
+ padding:10px;
+ margin:5px;
+ border-radius:15px;
+ animation:fade 1s;
+}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* REELS */
+.reel{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;}
+.slide{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;scroll-snap-align:start}
+
+/* LIGHTBOX */
+#lightbox{
+ position:fixed;top:0;left:0;width:100%;height:100%;
+ background:#000;
+ display:none;
+ justify-content:center;align-items:center;
+}
+#lightbox img{max-width:90%}
+
+/* FIREWORK */
+.fire{
+ position:absolute;width:5px;height:5px;background:white;
+ animation:explode 1s forwards;
+}
+@keyframes explode{
+ to{transform:translate(var(--x),var(--y));opacity:0;}
+}
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<audio id="music" autoplay loop>
+<source src="love.mp3">
+</audio>
+
+<!-- HEARTS -->
+<script>
+for(let i=0;i<30;i++){
+ let h=document.createElement("div");
+ h.className="heart";
+ h.style.left=Math.random()*100+"%";
+ h.style.animationDuration=(3+Math.random()*3)+"s";
+ document.body.appendChild(h);
+}
+</script>
+
+<!-- ENTRY -->
+<div id="entry" class="center card">
+<h1 style="font-family:Great Vibes">Hey Thira ❤️</h1>
+<p>I made something for you 🥺</p>
+<button onclick="go('pass')">Enter</button>
+</div>
+
+<!-- PASSWORD -->
+<div id="pass" class="center card hidden">
+<h2>When did our story begin? 💖</h2>
+<input id="p"><br><br>
+<button onclick="check()">Unlock</button>
+<p id="err"></p>
+</div>
+
+<!-- WHEEL -->
+<div id="wheelPage" class="center card hidden">
+<h2>Spin our love 🎡</h2>
+<div id="wheel" style="width:250px;height:250px;border-radius:50%;background:conic-gradient(#ff6fa5 0% 20%,#ff2f6d 20% 40%,#ff99c8 40% 60%,#ff2f6d 60% 80%,#ff6fa5 80% 100%);"></div>
+<br>
+<button onclick="spin()">Spin</button>
+</div>
+
+<!-- CHAT -->
+<div id="chat" class="center card hidden">
+<h2>Our Chat 💬</h2>
+<div id="chatbox"></div>
+<button onclick="go('reel')">Next ❤️</button>
+</div>
+
+<!-- REELS -->
+<div id="reel" class="reel hidden">
+<div class="slide">
+<img src="photo1.jpg" width="200" onclick="openImg(this)">
+<p>Our first smile ❤️</p>
+</div>
+<div class="slide">
+<img src="photo2.jpg" width="200" onclick="openImg(this)">
+<p>Un kooda irukum pothu happy ✨</p>
+</div>
+<div class="slide">
+<img src="photo3.jpg" width="200" onclick="openImg(this)">
+<p>You are my everything 💖</p>
+</div>
+<div class="slide">
+<button onclick="go('final');fire()">Final Surprise 💥</button>
+</div>
+</div>
+
+<!-- FINAL -->
+<div id="final" class="center hidden">
+<h1 style="font-family:Great Vibes">Happy Anniversary Thira ❤️</h1>
+<p id="typing"></p>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="this.style.display='none'">
+<img id="lightimg">
+</div>
+
+<script>
+function go(id){
+ document.querySelectorAll('.center,.reel').forEach(x=>x.classList.add('hidden'));
+ document.getElementById(id).classList.remove('hidden');
+}
+
+/* PASSWORD */
+function check(){
+ if(document.getElementById('p').value=="23082024"){
+  go('wheelPage');
+ }else{
+  document.getElementById('err').innerText="Aiyoo Thira 😜";
+ }
+}
+
+/* SPIN */
+function spin(){
+ let deg=Math.floor(Math.random()*360)+1080;
+ document.getElementById('wheel').style.transform="rotate("+deg+"deg)";
+ setTimeout(()=>{go('chat');chat()},4000);
+}
+
+/* CHAT */
+function chat(){
+ let msgs=[
+ "Hi ❤️",
+ "Naa yarunu theriyutha",
+ "Mm theriyuthu",
+ "LT thana neega?",
+ "Mm ama ngaa 🥺❤️"
+ ];
+ let i=0;
+ let box=document.getElementById('chatbox');
+ let int=setInterval(()=>{
+  if(i>=msgs.length){clearInterval(int);return;}
+  let d=document.createElement("div");
+  d.className="msg";
+  d.innerText=msgs[i];
+  box.appendChild(d);
+  i++;
+ },900);
+}
+
+/* IMAGE VIEW */
+function openImg(img){
+ document.getElementById('lightbox').style.display="flex";
+ document.getElementById('lightimg').src=img.src;
+}
+
+/* FIREWORK */
+function fire(){
+ for(let i=0;i<80;i++){
+  let f=document.createElement("div");
+  f.className="fire";
+  f.style.left="50%";f.style.top="50%";
+  f.style.setProperty('--x',(Math.random()*300-150)+'px');
+  f.style.setProperty('--y',(Math.random()*300-150)+'px');
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),1000);
+ }
+ typing();
+}
+
+/* TYPING */
+function typing(){
+ let text=`Nee enakku kidaichathukku… ❤️
+
+Thangamailu… nee than enakku ellamae 🥺
+
+Un kooda irukum pothu naan romba happy ✨
+
+Thanks for being with me ❤️
+
+Love you en pondatti 😘
+
+Happy Anniversary bbykuttyan 💖`;
+ let i=0;
+ let speed=40;
+ let t=setInterval(()=>{
+  document.getElementById("typing").innerHTML+=text[i];
+  i++;
+  if(i>=text.length) clearInterval(t);
+ },speed);
+}
+</script>
+
+</body>
+</html>
