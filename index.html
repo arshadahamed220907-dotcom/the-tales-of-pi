@@ -17,7 +17,7 @@ overflow:hidden;
 perspective:1200px;
 }
 
-/* CINEMATIC BACKGROUND LAYERS */
+/* BACKGROUND GLOW */
 .bg{
 position:fixed;
 inset:0;
@@ -25,7 +25,7 @@ background:radial-gradient(circle at top,#ff4e8a22,#000);
 z-index:-2;
 }
 
-/* 3D CAMERA SYSTEM */
+/* APPLE CINEMATIC PAGES */
 .center,.reel{
 position:absolute;
 width:100%;
@@ -37,7 +37,7 @@ align-items:center;
 text-align:center;
 
 opacity:0;
-transform:translateZ(-100px) scale(1.1);
+transform:translateZ(-120px) scale(1.1);
 filter:blur(10px);
 
 transition:1.2s cubic-bezier(.2,.8,.2,1);
@@ -47,13 +47,13 @@ pointer-events:none;
 .center.active,.reel.active{
 opacity:1;
 transform:translateZ(0) scale(1);
-filter:blur(0px);
+filter:blur(0);
 pointer-events:auto;
 }
 
-/* APPLE GLASS */
+/* GLASS CARD */
 .card{
-background:rgba(20,20,30,0.55);
+background:rgba(20,20,30,0.6);
 backdrop-filter:blur(25px);
 padding:26px;
 border-radius:26px;
@@ -144,7 +144,6 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 gap:10px;
-transform:translateZ(50px);
 }
 
 /* IMAGE */
@@ -153,11 +152,6 @@ width:220px;
 border-radius:16px;
 object-fit:cover;
 box-shadow:0 20px 50px rgba(0,0,0,0.6);
-transition:0.4s;
-}
-
-img:hover{
-transform:scale(1.03);
 }
 
 /* LIGHTBOX */
@@ -173,23 +167,42 @@ align-items:center;
 #lightbox img{
 max-width:90%;
 border-radius:18px;
-animation:zoom 0.4s ease;
 }
 
-@keyframes zoom{
-from{transform:scale(0.8)}
-to{transform:scale(1)}
+/* POPUP */
+#popup{
+position:fixed;
+inset:0;
+display:none;
+justify-content:center;
+align-items:center;
+background:rgba(0,0,0,0.92);
+z-index:9999;
+}
+
+.popup-card{
+background:rgba(20,20,30,0.85);
+backdrop-filter:blur(20px);
+padding:25px;
+border-radius:20px;
+text-align:center;
+animation:pop 0.4s ease;
+}
+
+@keyframes pop{
+from{transform:scale(0.8);opacity:0}
+to{transform:scale(1);opacity:1}
+}
+
+.popup-card img{
+width:200px;
+border-radius:15px;
+margin-bottom:10px;
 }
 
 h1{
 font-family:"Great Vibes";
 font-size:44px;
-}
-
-/* SCROLL CAMERA EFFECT */
-.scrollLayer{
-transform:translateZ(0);
-transition:transform 0.2s ease;
 }
 
 </style>
@@ -204,10 +217,7 @@ transition:transform 0.2s ease;
 </audio>
 
 <script>
-/* FIX MUSIC AUTOPLAY */
-window.addEventListener("click",()=>{
-document.getElementById("music").play();
-});
+window.addEventListener("click",()=>document.getElementById("music").play());
 </script>
 
 <!-- HEARTS -->
@@ -225,7 +235,7 @@ document.body.appendChild(h);
 <div id="entry" class="center active">
 <div class="card">
 <h1>En chella pondatti ❤️</h1>
-<p>Love you chellamailu Parunga nalla irukum  🥺</p>
+<p>Love you chellamailu Parunga nalla irukum 🥺</p>
 <br>
 <button onclick="go('pass')">Ulla polama</button>
 </div>
@@ -298,7 +308,20 @@ document.body.appendChild(h);
 <img id="lightimg">
 </div>
 
+<!-- POPUP -->
+<div id="popup">
+<div class="popup-card">
+<img id="popimg">
+<p id="poptxt"></p>
+<br>
+<button onclick="nextSpin()">Spin Again</button>
+<button onclick="go('chat');document.getElementById('popup').style.display='none'">Next</button>
+</div>
+</div>
+
 <script>
+
+let spinCount = 0;
 
 /* PAGE SWITCH */
 function go(id){
@@ -313,15 +336,44 @@ go('wheelPage');
 }
 }
 
-/* 🎡 5 FULL SPINS FIX */
+/* 5 SPIN SYSTEM */
 function spin(){
-let fullSpins = 360 * 5;
-let extra = Math.random()*360;
-let deg = fullSpins + extra;
 
+let deg = 360*5 + Math.random()*360;
 document.getElementById('wheel').style.transform="rotate("+deg+"deg)";
 
-setTimeout(()=>{go('chat');chat()},5200);
+setTimeout(showMemory,5000);
+}
+
+function showMemory(){
+
+let data=[
+["photo1.jpg","First date ❤️"],
+["photo2.jpg","unga murhgan aa pakka pogum pothu yeduthathu ✨"],
+["photo3.jpg","neega alagu unga yepothumae 💖"],
+["photo2.jpg","un kuda irukum pothu naa yepothumae santhosama iruken ❤️"],
+["photo3.jpg","yepothumae ne kuda iruntha pothum 💞"]
+];
+
+let item=data[spinCount];
+
+document.getElementById("popup").style.display="flex";
+document.getElementById("popimg").src=item[0];
+document.getElementById("poptxt").innerText=item[1];
+
+spinCount++;
+}
+
+/* NEXT SPIN */
+function nextSpin(){
+document.getElementById("popup").style.display="none";
+
+if(spinCount<5){
+spin();
+}else{
+document.getElementById("popimg").src="photo1.jpg";
+document.getElementById("poptxt").innerText="mudinchiruchu chello next kudu ❤️";
+}
 }
 
 /* CHAT */
@@ -338,14 +390,6 @@ d.innerText=msgs[i++];
 box.appendChild(d);
 },700);
 }
-
-/* LIGHTBOX */
-document.querySelectorAll("img").forEach(img=>{
-img.onclick=()=>{
-document.getElementById("lightbox").style.display="flex";
-document.getElementById("lightimg").src=img.src;
-}
-});
 
 /* FIREWORK */
 function fire(){
@@ -387,13 +431,6 @@ i++;
 if(i>=text.length)clearInterval(t);
 },35);
 }
-
-/* SIMPLE SCROLL CAMERA FEEL */
-document.addEventListener("mousemove",(e)=>{
-let x=(e.clientX/window.innerWidth-0.5)*10;
-let y=(e.clientY/window.innerHeight-0.5)*10;
-document.body.style.transform=`rotateX(${y}deg) rotateY(${x}deg)`;
-});
 
 </script>
 
