@@ -7,116 +7,139 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
 
+/* GLOBAL APPLE-LIKE BASE */
 body{
+margin:0;
 font-family:Poppins;
-background:radial-gradient(circle at top,#ff4e8a,#0a000f);
-overflow:hidden;
+background:#000;
 color:white;
+overflow:hidden;
 }
 
-/* LOADER */
-#loader{
+/* CINEMATIC BACKGROUND LAYER */
+body::before{
+content:"";
 position:fixed;
 inset:0;
-background:#050008;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:9999;
+background:radial-gradient(circle at top,#ff4e8a33,#000);
+z-index:-1;
 }
 
-/* DARK GLASS CARD (FIXED CONTRAST) */
-.card{
-background:rgba(0,0,0,0.55);
-backdrop-filter:blur(18px);
-padding:28px;
-border-radius:25px;
-box-shadow:0 0 40px rgba(255,47,109,0.25);
-text-align:center;
-color:white;
-border:1px solid rgba(255,255,255,0.08);
-}
-
-/* PAGE SYSTEM */
-.page{
+/* APPLE STYLE PAGE ENGINE */
+.center,.reel{
 position:absolute;
-inset:0;
+width:100%;
+height:100vh;
 display:flex;
+flex-direction:column;
 justify-content:center;
 align-items:center;
-flex-direction:column;
+text-align:center;
+
 opacity:0;
-transform:scale(1.05);
-transition:1s cubic-bezier(.2,.8,.2,1);
+transform:translateY(30px) scale(1.02);
+filter:blur(8px);
+
+transition:
+opacity 1s cubic-bezier(.2,.8,.2,1),
+transform 1s cubic-bezier(.2,.8,.2,1),
+filter 1s cubic-bezier(.2,.8,.2,1);
+
 pointer-events:none;
 }
 
-.page.active{
+.center.active,.reel.active{
 opacity:1;
-transform:scale(1);
+transform:translateY(0) scale(1);
+filter:blur(0px);
 pointer-events:auto;
 }
 
-/* BUTTON */
+/* PREMIUM GLASS (APPLE MATERIAL STYLE) */
+.card{
+background:rgba(20,20,30,0.55);
+backdrop-filter:blur(25px);
+padding:26px;
+border-radius:26px;
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:
+0 30px 80px rgba(0,0,0,0.6),
+inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+/* BUTTON (SOFT APPLE MOTION) */
 button{
-padding:12px 28px;
+padding:12px 25px;
 border:none;
 border-radius:30px;
 background:linear-gradient(45deg,#ff2f6d,#ff6fa5);
 color:white;
-cursor:pointer;
 font-weight:600;
-transition:0.3s;
+cursor:pointer;
+transition:all 0.35s ease;
 }
 
 button:hover{
-transform:scale(1.08);
-box-shadow:0 0 25px #ff2f6d;
+transform:translateY(-3px) scale(1.03);
+box-shadow:0 20px 40px rgba(255,47,109,0.25);
 }
 
-/* INPUT FIX (BLACK STYLING) */
+/* INPUT (DARK PREMIUM) */
 input{
-padding:12px;
+padding:10px;
 border-radius:12px;
 border:none;
-outline:none;
 text-align:center;
-background:rgba(0,0,0,0.6);
+background:rgba(255,255,255,0.05);
 color:white;
-border:1px solid rgba(255,255,255,0.15);
+outline:none;
+border:1px solid rgba(255,255,255,0.1);
 }
 
-/* WHEEL */
+/* HEARTS (SOFT FLOAT LIKE APPLE BACKGROUND MOTION) */
+.heart{
+position:absolute;
+width:8px;
+height:8px;
+background:#ff4e8a;
+transform:rotate(45deg);
+animation:float 10s linear infinite;
+opacity:0.5;
+}
+
+@keyframes float{
+0%{transform:translateY(110vh) rotate(45deg);opacity:0}
+40%{opacity:0.8}
+100%{transform:translateY(-10vh) rotate(45deg);opacity:0}
+}
+
+/* WHEEL (SMOOTH INERTIA FEEL) */
 #wheel{
-width:260px;
-height:260px;
+width:250px;
+height:250px;
 border-radius:50%;
-background:conic-gradient(#ff2f6d,#ff6fa5,#ff99c8,#ff2f6d);
-transition:4.5s cubic-bezier(.1,.8,.2,1);
-box-shadow:0 0 40px rgba(255,47,109,0.4);
+background:conic-gradient(#ff6fa5,#ff2f6d,#ff99c8,#ff2f6d,#ff6fa5);
+box-shadow:0 0 60px rgba(255,47,109,0.25);
+transition:transform 5s cubic-bezier(.1,.9,.2,1);
 }
 
-/* CHAT */
+/* CHAT (SOFT FADE LIKE IOS MESSAGES) */
 .msg{
-background:rgba(255,255,255,0.08);
+background:rgba(255,255,255,0.07);
 padding:10px 14px;
 margin:6px;
 border-radius:14px;
-animation:pop 0.4s ease;
-color:white;
+animation:msg 0.6s ease;
 }
 
-@keyframes pop{
-from{opacity:0;transform:translateY(10px)}
+@keyframes msg{
+from{opacity:0;transform:translateY(12px)}
 to{opacity:1;transform:translateY(0)}
 }
 
 /* REELS */
 .reel{
-height:100vh;
 overflow:hidden;
 }
 
@@ -129,7 +152,21 @@ align-items:center;
 gap:10px;
 }
 
-/* LIGHTBOX */
+/* IMAGE — FIXED VISIBILITY ONLY (NO CHANGE TO NAME) */
+img{
+width:220px;
+border-radius:16px;
+object-fit:cover;
+box-shadow:0 20px 50px rgba(0,0,0,0.6);
+transform:scale(1);
+transition:0.4s ease;
+}
+
+img:hover{
+transform:scale(1.03);
+}
+
+/* LIGHTBOX (APPLE ZOOM FEEL) */
 #lightbox{
 position:fixed;
 inset:0;
@@ -141,8 +178,8 @@ align-items:center;
 
 #lightbox img{
 max-width:90%;
-border-radius:15px;
-animation:zoom 0.3s ease;
+border-radius:18px;
+animation:zoom 0.4s ease;
 }
 
 @keyframes zoom{
@@ -150,49 +187,61 @@ from{transform:scale(0.8);opacity:0}
 to{transform:scale(1);opacity:1}
 }
 
-/* TEXT */
+/* TYPOGRAPHY */
 h1{
 font-family:"Great Vibes";
 font-size:44px;
+letter-spacing:1px;
 }
 
+/* SMOOTH SCROLL FEEL ON SWITCH */
 .hidden{display:none}
+
 </style>
 </head>
 
 <body>
 
-<!-- LOADER -->
-<div id="loader">
-<div style="width:40px;height:40px;background:#ff2f6d;transform:rotate(45deg);"></div>
-<p style="margin-top:15px;color:#fff">Loading Love...</p>
-</div>
+<audio id="music" autoplay loop>
+<source src="love.mp3">
+</audio>
+
+<!-- HEARTS -->
+<script>
+for(let i=0;i<25;i++){
+let h=document.createElement("div");
+h.className="heart";
+h.style.left=Math.random()*100+"%";
+h.style.animationDuration=(6+Math.random()*6)+"s";
+document.body.appendChild(h);
+}
+</script>
 
 <!-- ENTRY -->
-<div id="entry" class="page active">
+<div id="entry" class="center active">
 <div class="card">
 <h1>Hey Thira ❤️</h1>
-<p>Premium romantic experience</p>
+<p>I made something for you 🥺</p>
 <br>
 <button onclick="go('pass')">Enter</button>
 </div>
 </div>
 
 <!-- PASSWORD -->
-<div id="pass" class="page">
+<div id="pass" class="center">
 <div class="card">
-<h2>Our Date?</h2>
+<h2>When did our story begin? 💖</h2>
 <br>
-<input id="p" placeholder="Enter code">
+<input id="p">
 <br><br>
 <button onclick="check()">Unlock</button>
 </div>
 </div>
 
 <!-- WHEEL -->
-<div id="wheelPage" class="page">
+<div id="wheelPage" class="center">
 <div class="card">
-<h2>Spin Love 🎡</h2>
+<h2>Spin our love 🎡</h2>
 <br>
 <div id="wheel"></div>
 <br><br>
@@ -201,44 +250,42 @@ font-size:44px;
 </div>
 
 <!-- CHAT -->
-<div id="chat" class="page">
+<div id="chat" class="center">
 <div class="card">
-<h2>Messages 💬</h2>
+<h2>Our Chat 💬</h2>
 <div id="chatbox"></div>
 <br>
-<button onclick="go('reel')">Next</button>
+<button onclick="go('reel')">Next ❤️</button>
 </div>
 </div>
 
 <!-- REELS -->
-<div id="reel" class="page">
-<div class="reel">
+<div id="reel" class="reel">
 
 <div class="slide">
-<img src="photo1.jpg" width="220" onclick="openImg(this)">
-<p>Memory ❤️</p>
-</div>
-
-<div class="slide">
-<img src="photo2.jpg" width="220" onclick="openImg(this)">
-<p>Memory ✨</p>
+<img src="photo1.jpg" onclick="openImg(this)">
+<p>Our first smile ❤️</p>
 </div>
 
 <div class="slide">
-<img src="photo3.jpg" width="220" onclick="openImg(this)">
-<p>Memory 💖</p>
+<img src="photo2.jpg" onclick="openImg(this)">
+<p>Un kooda irukum pothu happy ✨</p>
 </div>
 
 <div class="slide">
-<button onclick="go('final');fire()">Finish 💥</button>
+<img src="photo3.jpg" onclick="openImg(this)">
+<p>You are my everything 💖</p>
 </div>
 
+<div class="slide">
+<button onclick="go('final');fire()">Final Surprise 💥</button>
 </div>
+
 </div>
 
 <!-- FINAL -->
-<div id="final" class="page">
-<h1>Happy Anniversary ❤️</h1>
+<div id="final" class="center">
+<h1>Happy Anniversary Thira ❤️</h1>
 <p id="typing"></p>
 </div>
 
@@ -249,40 +296,41 @@ font-size:44px;
 
 <script>
 
+/* APPLE SMOOTH PAGE SWITCH */
 function go(id){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.querySelectorAll('.center,.reel').forEach(e=>{
+e.classList.remove('active');
+});
 document.getElementById(id).classList.add('active');
 }
 
 /* PASSWORD */
 function check(){
-if(document.getElementById("p").value==="23082024"){
-go("wheelPage");
-}else{
-alert("Wrong ❤️");
+if(document.getElementById('p').value=="23082024"){
+go('wheelPage');
 }
 }
 
-/* SPIN */
+/* WHEEL */
 function spin(){
 let deg=1440+Math.random()*360;
-document.getElementById("wheel").style.transform="rotate("+deg+"deg)";
-setTimeout(()=>{go('chat');chat()},4500);
+document.getElementById('wheel').style.transform="rotate("+deg+"deg)";
+setTimeout(()=>{go('chat');chat()},4800);
 }
 
 /* CHAT */
 function chat(){
-let m=["Hi ❤️","Miss you","Always you","Forever us","Love 💖"];
+let msgs=["Hi ❤️","Naa iruken","Nee than everything 🥺","Forever us 💖","Love you"];
 let i=0;
 let box=document.getElementById("chatbox");
 
 let t=setInterval(()=>{
-if(i>=m.length)clearInterval(t);
+if(i>=msgs.length)clearInterval(t);
 let d=document.createElement("div");
 d.className="msg";
-d.innerText=m[i++];
+d.innerText=msgs[i++];
 box.appendChild(d);
-},700);
+},650);
 }
 
 /* LIGHTBOX */
@@ -291,27 +339,27 @@ document.getElementById("lightbox").style.display="flex";
 document.getElementById("lightimg").src=img.src;
 }
 
-/* FIREWORK + TYPE */
+/* FIRE + TYPE */
 function fire(){
 for(let i=0;i<60;i++){
-let s=document.createElement("div");
-s.style.position="fixed";
-s.style.left="50%";
-s.style.top="50%";
-s.style.width="4px";
-s.style.height="4px";
-s.style.background="#fff";
-document.body.appendChild(s);
+let f=document.createElement("div");
+f.style.position="fixed";
+f.style.left="50%";
+f.style.top="50%";
+f.style.width="4px";
+f.style.height="4px";
+f.style.background="#fff";
+document.body.appendChild(f);
 
 let x=(Math.random()*300-150)+"px";
 let y=(Math.random()*300-150)+"px";
 
-s.animate([
+f.animate([
 {transform:"translate(0,0)",opacity:1},
 {transform:`translate(${x},${y})`,opacity:0}
 ],{duration:900});
 
-setTimeout(()=>s.remove(),900);
+setTimeout(()=>f.remove(),900);
 }
 type();
 }
@@ -319,8 +367,6 @@ type();
 /* TYPE */
 function type(){
 let text=`You are my forever ❤️
-
-Everything feels complete with you 🥺
 
 Happy Anniversary 💖`;
 
@@ -333,9 +379,6 @@ i++;
 if(i>=text.length)clearInterval(t);
 },35);
 }
-
-/* LOADER OFF */
-setTimeout(()=>document.getElementById("loader").style.display="none",1500);
 
 </script>
 
