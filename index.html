@@ -4,163 +4,275 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thira ❤️</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
+*{margin:0;padding:0;box-sizing:border-box}
+
 body{
- margin:0;
- font-family:Poppins;
- background:linear-gradient(135deg,#ff4e8a,#7a1c6b);
- color:white;
- overflow:hidden;
+font-family:Poppins;
+background:radial-gradient(circle at top,#ff4e8a,#120012);
+overflow:hidden;
+color:white;
 }
 
-/* CENTER */
-.center{
- height:100vh;
- display:flex;
- flex-direction:column;
- justify-content:center;
- align-items:center;
- text-align:center;
+/* PRELOADER */
+#loader{
+position:fixed;
+inset:0;
+background:#0b000f;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:9999;
+}
+
+.loader-heart{
+width:40px;height:40px;
+background:#ff2f6d;
+transform:rotate(45deg);
+animation:pulse 1s infinite;
+}
+
+.loader-heart::before,
+.loader-heart::after{
+content:'';
+position:absolute;
+width:40px;height:40px;
+background:#ff2f6d;
+border-radius:50%;
+}
+
+.loader-heart::before{left:-20px}
+.loader-heart::after{top:-20px}
+
+@keyframes pulse{
+0%{transform:rotate(45deg) scale(1)}
+50%{transform:rotate(45deg) scale(1.2)}
+100%{transform:rotate(45deg) scale(1)}
+}
+
+/* PAGE SYSTEM */
+.page{
+position:absolute;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+opacity:0;
+transform:scale(1.05);
+transition:1s cubic-bezier(.2,.8,.2,1);
+pointer-events:none;
+}
+
+.page.active{
+opacity:1;
+transform:scale(1);
+pointer-events:auto;
 }
 
 /* GLASS */
 .card{
- background:rgba(255,255,255,0.1);
- backdrop-filter:blur(10px);
- padding:20px;
- border-radius:20px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(18px);
+padding:28px;
+border-radius:25px;
+box-shadow:0 0 40px rgba(255,47,109,0.2);
+text-align:center;
 }
 
 /* BUTTON */
 button{
- padding:12px 25px;
- border:none;
- border-radius:25px;
- background:#ff2f6d;
- color:white;
- cursor:pointer;
+padding:12px 28px;
+border:none;
+border-radius:30px;
+background:linear-gradient(45deg,#ff2f6d,#ff6fa5);
+color:white;
+cursor:pointer;
+font-weight:600;
+transition:0.3s;
 }
 
-/* HEARTS */
-.heart{
- position:absolute;
- width:12px;height:12px;
- background:red;
- transform:rotate(45deg);
- animation:float 6s infinite;
+button:hover{
+transform:scale(1.08);
+box-shadow:0 0 25px #ff2f6d;
 }
-@keyframes float{
- 0%{bottom:-10%}
- 100%{bottom:110%}
+
+/* INPUT */
+input{
+padding:10px;
+border-radius:10px;
+border:none;
+text-align:center;
+}
+
+/* WHEEL */
+#wheel{
+width:260px;
+height:260px;
+border-radius:50%;
+background:conic-gradient(#ff2f6d,#ff6fa5,#ff99c8,#ff2f6d);
+transition:4.5s cubic-bezier(.1,.8,.2,1);
+box-shadow:0 0 40px rgba(255,47,109,0.4);
 }
 
 /* CHAT */
 .msg{
- background:#ffffff22;
- padding:10px;
- margin:5px;
- border-radius:15px;
- animation:fade 1s;
+background:rgba(255,255,255,0.1);
+padding:10px 14px;
+margin:6px;
+border-radius:14px;
+animation:pop 0.4s ease;
 }
-@keyframes fade{from{opacity:0}to{opacity:1}}
+
+@keyframes pop{
+from{opacity:0;transform:translateY(10px)}
+to{opacity:1;transform:translateY(0)}
+}
 
 /* REELS */
-.reel{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;}
-.slide{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;scroll-snap-align:start}
+.reel{
+height:100vh;
+overflow:hidden;
+}
+
+.slide{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:10px;
+}
 
 /* LIGHTBOX */
 #lightbox{
- position:fixed;top:0;left:0;width:100%;height:100%;
- background:#000;
- display:none;
- justify-content:center;align-items:center;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.9);
+display:none;
+justify-content:center;
+align-items:center;
 }
-#lightbox img{max-width:90%}
 
-/* FIREWORK */
-.fire{
- position:absolute;width:5px;height:5px;background:white;
- animation:explode 1s forwards;
+#lightbox img{
+max-width:90%;
+border-radius:15px;
+transform:scale(0.8);
+animation:zoom 0.4s forwards;
 }
-@keyframes explode{
- to{transform:translate(var(--x),var(--y));opacity:0;}
+
+@keyframes zoom{
+to{transform:scale(1)}
 }
+
+/* HEARTS CANVAS OVERLAY */
+canvas{
+position:fixed;
+inset:0;
+pointer-events:none;
+}
+
+/* FINAL TEXT */
+h1{
+font-family:"Great Vibes";
+font-size:44px;
+}
+
+/* HIDE */
 .hidden{display:none}
 </style>
 </head>
 
 <body>
 
+<!-- LOADER -->
+<div id="loader">
+<div class="loader-heart"></div>
+<p style="margin-top:20px">Loading Love...</p>
+</div>
+
+<!-- CANVAS PARTICLES -->
+<canvas id="c"></canvas>
+
 <!-- MUSIC -->
-<audio id="music" autoplay loop>
+<audio id="music" loop autoplay>
 <source src="love.mp3">
 </audio>
 
-<!-- HEARTS -->
-<script>
-for(let i=0;i<30;i++){
- let h=document.createElement("div");
- h.className="heart";
- h.style.left=Math.random()*100+"%";
- h.style.animationDuration=(3+Math.random()*3)+"s";
- document.body.appendChild(h);
-}
-</script>
-
 <!-- ENTRY -->
-<div id="entry" class="center card">
-<h1 style="font-family:Great Vibes">Hey Thira ❤️</h1>
-<p>I made something for you 🥺</p>
+<div id="entry" class="page active">
+<div class="card">
+<h1>Hey Thira ❤️</h1>
+<p>A premium love experience</p>
+<br>
 <button onclick="go('pass')">Enter</button>
 </div>
+</div>
 
-<!-- PASSWORD -->
-<div id="pass" class="center card hidden">
-<h2>When did our story begin? 💖</h2>
-<input id="p"><br><br>
+<!-- PASS -->
+<div id="pass" class="page">
+<div class="card">
+<h2>Our Date?</h2>
+<br>
+<input id="p">
+<br><br>
 <button onclick="check()">Unlock</button>
-<p id="err"></p>
+</div>
 </div>
 
 <!-- WHEEL -->
-<div id="wheelPage" class="center card hidden">
-<h2>Spin our love 🎡</h2>
-<div id="wheel" style="width:250px;height:250px;border-radius:50%;background:conic-gradient(#ff6fa5 0% 20%,#ff2f6d 20% 40%,#ff99c8 40% 60%,#ff2f6d 60% 80%,#ff6fa5 80% 100%);"></div>
+<div id="wheelPage" class="page">
+<div class="card">
+<h2>Spin Love 🎡</h2>
 <br>
+<div id="wheel"></div>
+<br><br>
 <button onclick="spin()">Spin</button>
+</div>
 </div>
 
 <!-- CHAT -->
-<div id="chat" class="center card hidden">
-<h2>Our Chat 💬</h2>
+<div id="chat" class="page">
+<div class="card">
+<h2>Messages 💬</h2>
 <div id="chatbox"></div>
-<button onclick="go('reel')">Next ❤️</button>
+<br>
+<button onclick="go('reel')">Next</button>
+</div>
 </div>
 
 <!-- REELS -->
-<div id="reel" class="reel hidden">
+<div id="reel" class="page">
+<div class="reel">
+
 <div class="slide">
-<img src="photo1.jpg" width="200" onclick="openImg(this)">
-<p>Our first smile ❤️</p>
+<img src="photo1.jpg" width="220" onclick="openImg(this)">
+<p>Memory 1 ❤️</p>
 </div>
+
 <div class="slide">
-<img src="photo2.jpg" width="200" onclick="openImg(this)">
-<p>Un kooda irukum pothu happy ✨</p>
+<img src="photo2.jpg" width="220" onclick="openImg(this)">
+<p>Memory 2 ✨</p>
 </div>
+
 <div class="slide">
-<img src="photo3.jpg" width="200" onclick="openImg(this)">
-<p>You are my everything 💖</p>
+<img src="photo3.jpg" width="220" onclick="openImg(this)">
+<p>Memory 3 💖</p>
 </div>
+
 <div class="slide">
-<button onclick="go('final');fire()">Final Surprise 💥</button>
+<button onclick="go('final');explode()">Finish 💥</button>
+</div>
+
 </div>
 </div>
 
 <!-- FINAL -->
-<div id="final" class="center hidden">
-<h1 style="font-family:Great Vibes">Happy Anniversary Thira ❤️</h1>
+<div id="final" class="page">
+<h1>Happy Anniversary ❤️</h1>
 <p id="typing"></p>
 </div>
 
@@ -170,89 +282,130 @@ for(let i=0;i<30;i++){
 </div>
 
 <script>
+
+/* LOADER */
+window.onload=()=>{
+ setTimeout(()=>document.getElementById("loader").style.display="none",1500);
+}
+
+/* PAGE */
 function go(id){
- document.querySelectorAll('.center,.reel').forEach(x=>x.classList.add('hidden'));
- document.getElementById(id).classList.remove('hidden');
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
 }
 
 /* PASSWORD */
 function check(){
- if(document.getElementById('p').value=="23082024"){
-  go('wheelPage');
- }else{
-  document.getElementById('err').innerText="Aiyoo Thira 😜";
- }
+ if(document.getElementById("p").value==="23082024"){
+  go("wheelPage");
+ }else alert("Wrong ❤️");
 }
 
 /* SPIN */
 function spin(){
- let deg=Math.floor(Math.random()*360)+1080;
- document.getElementById('wheel').style.transform="rotate("+deg+"deg)";
- setTimeout(()=>{go('chat');chat()},4000);
+ let deg=1440+Math.random()*360;
+ document.getElementById("wheel").style.transform="rotate("+deg+"deg)";
+ setTimeout(()=>{go('chat');chat()},4500);
 }
 
 /* CHAT */
 function chat(){
- let msgs=[
- "Hi ❤️",
- "Naa yarunu theriyutha",
- "Mm theriyuthu",
- "LT thana neega?",
- "Mm ama ngaa 🥺❤️"
- ];
+ let m=["Hi ❤️","Miss you","Nee en life ❤️","Always us","Forever 💖"];
  let i=0;
- let box=document.getElementById('chatbox');
- let int=setInterval(()=>{
-  if(i>=msgs.length){clearInterval(int);return;}
+ let box=document.getElementById("chatbox");
+ let t=setInterval(()=>{
+  if(i>=m.length)clearInterval(t);
   let d=document.createElement("div");
   d.className="msg";
-  d.innerText=msgs[i];
+  d.innerText=m[i++];
   box.appendChild(d);
-  i++;
- },900);
+ },700);
 }
 
-/* IMAGE VIEW */
+/* LIGHTBOX */
 function openImg(img){
- document.getElementById('lightbox').style.display="flex";
- document.getElementById('lightimg').src=img.src;
+ document.getElementById("lightbox").style.display="flex";
+ document.getElementById("lightimg").src=img.src;
 }
 
-/* FIREWORK */
-function fire(){
- for(let i=0;i<80;i++){
-  let f=document.createElement("div");
-  f.className="fire";
-  f.style.left="50%";f.style.top="50%";
-  f.style.setProperty('--x',(Math.random()*300-150)+'px');
-  f.style.setProperty('--y',(Math.random()*300-150)+'px');
-  document.body.appendChild(f);
-  setTimeout(()=>f.remove(),1000);
+/* TYPE */
+function explode(){
+ for(let i=0;i<70;i++){
+  let s=document.createElement("div");
+  s.style.position="fixed";
+  s.style.left="50%";
+  s.style.top="50%";
+  s.style.width="4px";
+  s.style.height="4px";
+  s.style.background="#fff";
+  s.style.borderRadius="50%";
+  document.body.appendChild(s);
+
+  let x=(Math.random()*300-150)+"px";
+  let y=(Math.random()*300-150)+"px";
+
+  s.animate([
+   {transform:"translate(0,0)",opacity:1},
+   {transform:`translate(${x},${y})`,opacity:0}
+  ],{duration:900});
+
+  setTimeout(()=>s.remove(),900);
  }
- typing();
+ type();
 }
 
 /* TYPING */
-function typing(){
- let text=`Nee enakku kidaichathukku… ❤️
+function type(){
+ let text=`You are my forever ❤️
 
-Thangamailu… nee than enakku ellamae 🥺
+Every moment feels magical ✨
 
-Un kooda irukum pothu naan romba happy ✨
+Thank you for everything 🥺
 
-Thanks for being with me ❤️
+Happy Anniversary 💖`;
 
-Love you en pondatti 😘
-
-Happy Anniversary bbykuttyan 💖`;
  let i=0;
- let speed=40;
+ let el=document.getElementById("typing");
+
  let t=setInterval(()=>{
-  document.getElementById("typing").innerHTML+=text[i];
+  el.innerHTML+=text[i];
   i++;
-  if(i>=text.length) clearInterval(t);
- },speed);
+  if(i>=text.length)clearInterval(t);
+ },35);
 }
+
+/* PARTICLES */
+const canvas=document.getElementById("c");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+let hearts=[];
+
+for(let i=0;i<80;i++){
+ hearts.push({
+  x:Math.random()*canvas.width,
+  y:Math.random()*canvas.height,
+  r:Math.random()*2+1,
+  s:Math.random()*1+0.5
+ });
+}
+
+function draw(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ hearts.forEach(h=>{
+  ctx.fillStyle="rgba(255,80,150,0.6)";
+  ctx.beginPath();
+  ctx.arc(h.x,h.y,h.r,0,Math.PI*2);
+  ctx.fill();
+
+  h.y-=h.s;
+  if(h.y<0)h.y=canvas.height;
+ });
+ requestAnimationFrame(draw);
+}
+draw();
+
 </script>
 
 </body>
