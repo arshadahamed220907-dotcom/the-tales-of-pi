@@ -17,15 +17,14 @@ overflow:hidden;
 perspective:1200px;
 }
 
-/* BACKGROUND GLOW */
 .bg{
 position:fixed;
 inset:0;
 background:radial-gradient(circle at top,#ff4e8a22,#000);
-z-index:-2;
+z-index:-1;
 }
 
-/* APPLE CINEMATIC PAGES */
+/* PAGE SYSTEM */
 .center,.reel{
 position:absolute;
 width:100%;
@@ -37,28 +36,23 @@ align-items:center;
 text-align:center;
 
 opacity:0;
-transform:translateZ(-120px) scale(1.1);
-filter:blur(10px);
-
-transition:1.2s cubic-bezier(.2,.8,.2,1);
+transform:scale(1.05);
+transition:1s ease;
 pointer-events:none;
 }
 
 .center.active,.reel.active{
 opacity:1;
-transform:translateZ(0) scale(1);
-filter:blur(0);
+transform:scale(1);
 pointer-events:auto;
 }
 
-/* GLASS CARD */
+/* GLASS */
 .card{
 background:rgba(20,20,30,0.6);
-backdrop-filter:blur(25px);
-padding:26px;
-border-radius:26px;
-border:1px solid rgba(255,255,255,0.08);
-box-shadow:0 30px 80px rgba(0,0,0,0.6);
+backdrop-filter:blur(20px);
+padding:25px;
+border-radius:20px;
 }
 
 /* BUTTON */
@@ -70,24 +64,16 @@ background:linear-gradient(45deg,#ff2f6d,#ff6fa5);
 color:white;
 font-weight:600;
 cursor:pointer;
-transition:0.3s;
-}
-
-button:hover{
-transform:translateY(-2px) scale(1.03);
-box-shadow:0 20px 40px rgba(255,47,109,0.3);
 }
 
 /* INPUT */
 input{
 padding:10px;
-border-radius:12px;
+border-radius:10px;
 border:none;
 text-align:center;
 background:rgba(255,255,255,0.05);
 color:white;
-outline:none;
-border:1px solid rgba(255,255,255,0.1);
 }
 
 /* HEARTS */
@@ -98,12 +84,11 @@ height:8px;
 background:#ff4e8a;
 transform:rotate(45deg);
 animation:float 10s linear infinite;
-opacity:0.5;
 }
 
 @keyframes float{
 0%{transform:translateY(110vh) rotate(45deg);opacity:0}
-50%{opacity:0.8}
+50%{opacity:1}
 100%{transform:translateY(-10vh) rotate(45deg);opacity:0}
 }
 
@@ -113,60 +98,41 @@ width:250px;
 height:250px;
 border-radius:50%;
 background:conic-gradient(#ff6fa5,#ff2f6d,#ff99c8,#ff2f6d,#ff6fa5);
-box-shadow:0 0 60px rgba(255,47,109,0.25);
-transition:transform 5.5s cubic-bezier(.1,.9,.2,1);
+transition:transform 5s cubic-bezier(.1,.9,.2,1);
 }
 
-/* CHAT */
-.msg{
-background:rgba(255,255,255,0.07);
-padding:10px 14px;
-margin:6px;
-border-radius:14px;
-animation:fade 0.6s ease;
-}
-
-@keyframes fade{
-from{opacity:0;transform:translateY(10px)}
-to{opacity:1;transform:translateY(0)}
-}
-
-/* REELS */
-.reel{
-overflow:hidden;
-transform-style:preserve-3d;
-}
-
-.slide{
-height:100vh;
+/* CHAT (INSTAGRAM STYLE FIXED) */
+.chatbox{
 display:flex;
 flex-direction:column;
-justify-content:center;
-align-items:center;
-gap:10px;
+gap:8px;
+width:100%;
+max-width:300px;
 }
 
-/* IMAGE */
+.msg{
+padding:10px 14px;
+border-radius:15px;
+max-width:80%;
+font-size:14px;
+}
+
+.me{
+align-self:flex-end;
+background:#ff2f6d;
+}
+
+.her{
+align-self:flex-start;
+background:rgba(255,255,255,0.1);
+}
+
+/* IMAGE FIX */
 img{
 width:220px;
-border-radius:16px;
+border-radius:15px;
 object-fit:cover;
 box-shadow:0 20px 50px rgba(0,0,0,0.6);
-}
-
-/* LIGHTBOX */
-#lightbox{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.92);
-display:none;
-justify-content:center;
-align-items:center;
-}
-
-#lightbox img{
-max-width:90%;
-border-radius:18px;
 }
 
 /* POPUP */
@@ -177,21 +143,14 @@ display:none;
 justify-content:center;
 align-items:center;
 background:rgba(0,0,0,0.92);
-z-index:9999;
+z-index:999;
 }
 
 .popup-card{
-background:rgba(20,20,30,0.85);
-backdrop-filter:blur(20px);
-padding:25px;
+background:rgba(20,20,30,0.8);
+padding:20px;
 border-radius:20px;
 text-align:center;
-animation:pop 0.4s ease;
-}
-
-@keyframes pop{
-from{transform:scale(0.8);opacity:0}
-to{transform:scale(1);opacity:1}
 }
 
 .popup-card img{
@@ -217,12 +176,14 @@ font-size:44px;
 </audio>
 
 <script>
-window.addEventListener("click",()=>document.getElementById("music").play());
+window.addEventListener("click",()=>{
+document.getElementById("music").play();
+});
 </script>
 
 <!-- HEARTS -->
 <script>
-for(let i=0;i<25;i++){
+for(let i=0;i<20;i++){
 let h=document.createElement("div");
 h.className="heart";
 h.style.left=Math.random()*100+"%";
@@ -235,30 +196,27 @@ document.body.appendChild(h);
 <div id="entry" class="center active">
 <div class="card">
 <h1>En chella pondatti ❤️</h1>
-<p>Love you chellamailu Parunga nalla irukum 🥺</p>
+<p>Love you chellam 🥺</p>
 <br>
-<button onclick="go('pass')">Ulla polama</button>
+<button onclick="go('pass')">Enter</button>
 </div>
 </div>
 
 <!-- PASSWORD -->
 <div id="pass" class="center">
 <div class="card">
-<h2>Yeppo neega engaluku first msg panninga 💖</h2>
-<br>
-<input id="p">
-<br><br>
-<button onclick="check()">Thoranthuru seesae</button>
+<h2>Yeppo first msg 💖</h2>
+<input id="p"><br><br>
+<button onclick="check()">Open</button>
 </div>
 </div>
 
 <!-- WHEEL -->
 <div id="wheelPage" class="center">
 <div class="card">
-<h2>Spin Pannu di thangamailu 🎡</h2>
-<br>
+<h2>Spin 🎡</h2>
 <div id="wheel"></div>
-<br><br>
+<br>
 <button onclick="spin()">Spin</button>
 </div>
 </div>
@@ -266,46 +224,17 @@ document.body.appendChild(h);
 <!-- CHAT -->
 <div id="chat" class="center">
 <div class="card">
-<h2>Nayabagam iruka 💬</h2>
-<div id="chatbox"></div>
+<h2>Instagram Chat 💬</h2>
+<div id="chatbox" class="chatbox"></div>
 <br>
-<button onclick="go('reel')">Aduthu polama ❤️</button>
+<button onclick="go('final');type()">Next ❤️</button>
 </div>
-</div>
-
-<!-- REELS -->
-<div id="reel" class="reel">
-
-<div class="slide">
-<img src="photo1.jpg">
-<p>Our first date ❤️</p>
-</div>
-
-<div class="slide">
-<img src="photo2.jpg">
-<p>Un kooda irukum pothu happy aa iruken ✨</p>
-</div>
-
-<div class="slide">
-<img src="photo3.jpg">
-<p>Neega than engaluku yellamae 💖</p>
-</div>
-
-<div class="slide">
-<button onclick="go('final');fire()">Finally 💥</button>
-</div>
-
 </div>
 
 <!-- FINAL -->
 <div id="final" class="center">
-<h1>Happy Anniversary en chellapondattti ❤️</h1>
+<h1>Happy Anniversary ❤️</h1>
 <p id="typing"></p>
-</div>
-
-<!-- LIGHTBOX -->
-<div id="lightbox" onclick="this.style.display='none'">
-<img id="lightimg">
 </div>
 
 <!-- POPUP -->
@@ -315,17 +244,17 @@ document.body.appendChild(h);
 <p id="poptxt"></p>
 <br>
 <button onclick="nextSpin()">Spin Again</button>
-<button onclick="go('chat');document.getElementById('popup').style.display='none'">Next</button>
+<button onclick="go('chat');document.getElementById('popup').style.display='none';startChat()">Next</button>
 </div>
 </div>
 
 <script>
 
-let spinCount = 0;
+let spinCount=0;
 
-/* PAGE SWITCH */
+/* PAGE */
 function go(id){
-document.querySelectorAll('.center,.reel').forEach(e=>e.classList.remove('active'));
+document.querySelectorAll('.center').forEach(e=>e.classList.remove('active'));
 document.getElementById(id).classList.add('active');
 }
 
@@ -336,15 +265,15 @@ go('wheelPage');
 }
 }
 
-/* 5 SPIN SYSTEM */
+/* SPIN FIXED */
 function spin(){
-
-let deg = 360*5 + Math.random()*360;
-document.getElementById('wheel').style.transform="rotate("+deg+"deg)";
+let deg=360*5+Math.random()*360;
+document.getElementById("wheel").style.transform="rotate("+deg+"deg)";
 
 setTimeout(showMemory,5000);
 }
 
+/* MEMORIES FIXED */
 function showMemory(){
 
 let data=[
@@ -355,11 +284,9 @@ let data=[
 ["photo3.jpg","yepothumae ne kuda iruntha pothum 💞"]
 ];
 
-let item=data[spinCount];
-
 document.getElementById("popup").style.display="flex";
-document.getElementById("popimg").src=item[0];
-document.getElementById("poptxt").innerText=item[1];
+document.getElementById("popimg").src=data[spinCount][0];
+document.getElementById("poptxt").innerText=data[spinCount][1];
 
 spinCount++;
 }
@@ -372,55 +299,43 @@ if(spinCount<5){
 spin();
 }else{
 document.getElementById("popimg").src="photo1.jpg";
-document.getElementById("poptxt").innerText="mudinchiruchu chello next kudu ❤️";
+document.getElementById("poptxt").innerText="mudinchiruchu chello ❤️";
 }
 }
 
-/* CHAT */
-function chat(){
-let msgs=["Hi "," Hi ","Naa Yarunu Theriyutha ","Mm ","Lt thana neega "];
-let i=0;
+/* INSTAGRAM CHAT FIXED */
+function startChat(){
 let box=document.getElementById("chatbox");
+box.innerHTML="";
+
+let msgs=[
+["her","Hi"],
+["me","Hi"],
+["her","Naa yarunu theriyutha"],
+["me","mm"],
+["her","lt thana neega"],
+["me","mm"]
+];
+
+let i=0;
 
 let t=setInterval(()=>{
 if(i>=msgs.length)clearInterval(t);
+
 let d=document.createElement("div");
-d.className="msg";
-d.innerText=msgs[i++];
+d.className="msg "+(msgs[i][0]=="me"?"me":"her");
+d.innerText=msgs[i][1];
+
 box.appendChild(d);
-},700);
-}
-
-/* FIREWORK */
-function fire(){
-for(let i=0;i<70;i++){
-let f=document.createElement("div");
-f.style.position="fixed";
-f.style.left="50%";
-f.style.top="50%";
-f.style.width="4px";
-f.style.height="4px";
-f.style.background="#fff";
-document.body.appendChild(f);
-
-let x=(Math.random()*300-150)+"px";
-let y=(Math.random()*300-150)+"px";
-
-f.animate([
-{transform:"translate(0,0)",opacity:1},
-{transform:`translate(${x},${y})`,opacity:0}
-],{duration:900});
-
-setTimeout(()=>f.remove(),900);
-}
-type();
+i++;
+},800);
 }
 
 /* TYPE */
 function type(){
-let text=`nee ennaku kidachathukku romba happy aa feel panren...thangamaailu nee than ennaku yellame un kooda irukum pothu naa romba happy aa iruken.. thanks for being with me.. love you en pondatti
+let text=`nee ennaku kidachathukku romba happy ❤️
 
-Happy Anniversary bbykuttyan 💖`;
+Happy Anniversary 💖`;
 
 let i=0;
 let el=document.getElementById("typing");
@@ -429,7 +344,7 @@ let t=setInterval(()=>{
 el.innerHTML+=text[i];
 i++;
 if(i>=text.length)clearInterval(t);
-},35);
+},30);
 }
 
 </script>
